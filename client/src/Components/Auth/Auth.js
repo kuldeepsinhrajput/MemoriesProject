@@ -1,3 +1,5 @@
+
+//clientid:"539851861417-qpa451qhld3s08om5n9kc3453ko97pj2.apps.googleusercontent.com"
 import React, { useState } from "react";
 import {
   Avatar,
@@ -11,7 +13,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 import Input from "./input";
 import Icon from "./icon";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from '@react-oauth/google';
+//import { GoogleLogin } from "react-google-login";
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
@@ -19,8 +22,8 @@ const Auth = () => {
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = () => { };
+  const handleChange = () => { };
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     handleShowPassword(false);
@@ -28,8 +31,10 @@ const Auth = () => {
   const googleSuccess = async (res) => {
     console.log(res);
   };
-  const googleError = () =>
-    alert("Google Sign In was unsuccessful. Try again later");
+  const googleError = (err) => {
+    console.log(err);
+    console.log("Google Sign In was unsuccessful. Try again later");
+  };
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -91,7 +96,7 @@ const Auth = () => {
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
           <GoogleLogin
-            clientId="ClientID"
+            // clientId="539851861417-qpa451qhld3s08om5n9kc3453ko97pj2.apps.googleusercontent.com"
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
