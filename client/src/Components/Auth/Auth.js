@@ -1,6 +1,30 @@
 
 //clientid:"539851861417-qpa451qhld3s08om5n9kc3453ko97pj2.apps.googleusercontent.com"
-import React, { useState } from "react";
+/*import React, { useState, useRef } from "react";
+import { useScript } from "./hooks/useScript";
+import jwt_deocde from "jwt-decode";
+
+const App = () => {
+  const googlebuttonref = useRef();
+  const [user, setuser] = useState(false);
+  const onGoogleSignIn = (user) => {
+    let userCred = user.credential;
+    let payload = jwt_deocde(userCred);
+    console.log(payload);
+    setuser(payload);
+  };
+  useScript("https://accounts.google.com/gsi/client", () => {
+    window.google.accounts.id.initialize({
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID, // here's your Google ID
+      callback: onGoogleSignIn,
+      auto_select: false,
+    });
+
+    window.google.accounts.id.renderButton(googlebuttonref.current, {
+      size: "medium",
+    });
+  });*/
+//import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -13,13 +37,16 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 import Input from "./input";
 import Icon from "./icon";
+import { useDispatch } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
-//import { GoogleLogin } from "react-google-login";
+import React, { useState, useRef } from "react";
+import jwt_deocde from "jwt-decode";
+
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-
+  const dispatch = useDispatch();
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
   const handleSubmit = () => { };
@@ -28,8 +55,21 @@ const Auth = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     handleShowPassword(false);
   };
-  const googleSuccess = async (res) => {
-    console.log(res);
+  const [user, setuser] = useState(false);
+  const googleSuccess = async (user) => {
+
+    //console.log(res);
+    let token = user.credential;
+    let payload = jwt_deocde(token);
+    console.log(payload);
+    setuser(payload);
+    //const result = res?.profileObj;
+    //const token = res?.tokenId;
+    try {
+      dispatch({ type: 'AUTH', data: { payload, token } });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const googleError = (err) => {
     console.log(err);
