@@ -41,12 +41,15 @@ import { useDispatch } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 import React, { useState, useRef } from "react";
 import jwt_deocde from "jwt-decode";
-
+import { useNavigate } from "react-router-dom";
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
   const handleSubmit = () => { };
@@ -60,13 +63,14 @@ const Auth = () => {
 
     //console.log(res);
     let token = user.credential;
-    let payload = jwt_deocde(token);
-    console.log(payload);
-    setuser(payload);
+    let result = jwt_deocde(token);
+    console.log(result);
+    setuser(result);
     //const result = res?.profileObj;
     //const token = res?.tokenId;
     try {
-      dispatch({ type: 'AUTH', data: { payload, token } });
+      dispatch({ type: 'AUTH', data: { result, token } });
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
