@@ -1,12 +1,10 @@
 //actions ->posts.js
+
+//Actions creator
+
+import { FETCH_ALL, CREATE, UPDATE, DELETE, LIKE } from "../constants/actionTypes";
 import * as api from "../api";
-import {
-  FETCH_ALL,
-  CREATE,
-  UPDATE,
-  DELETE,
-  LIKE,
-} from "../constants/actionTypes.js";
+
 //Actions creator
 
 export const getPosts = () => async (dispatch) => {
@@ -53,3 +51,4 @@ export const likePost = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
