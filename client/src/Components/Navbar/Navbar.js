@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useStyles from "./styles.js";
 import memories from "../../images/memories.png";
 import { useDispatch } from "react-redux";
+import decode from 'jwt-decode';
+
 const Navbar = () => {
   const classes = useStyles();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -19,16 +21,19 @@ const Navbar = () => {
 
     setUser(null);
   };
-
-
+  //
   useEffect(() => {
     const token = user?.token;
-    //JWT..manual
 
+    if (token) {
+      const decodedToken = decode(token);
 
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
+
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
